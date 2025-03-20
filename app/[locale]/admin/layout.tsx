@@ -4,13 +4,19 @@ import React from 'react'
 import Menu from '@/components/shared/header/menu'
 import { AdminNav } from './admin-nav'
 import { getSetting } from '@/lib/actions/setting.actions'
+import { auth } from '@/auth'
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+   const session = await auth()
+  if (session?.user.role !== 'Admin')
+    throw new Error('Admin permission required')
+
   const { site } = await getSetting()
+
   return (
     <>
       <div className='flex flex-col'>

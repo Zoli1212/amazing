@@ -95,8 +95,9 @@ export const SignInWithGoogle = async () => {
   await signIn('google')
 }
 export const SignOut = async () => {
-  const redirectTo = await signOut({ redirect: false })
-  redirect(redirectTo.redirect)
+  revalidatePath('/', 'layout')
+  const result = await signOut({ redirect: false, redirectTo: '/' })
+  redirect(result?.url || '/')
 }
 
 // GET
